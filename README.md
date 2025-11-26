@@ -23,38 +23,73 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This service is a small REST API built with NestJS and TypeORM for managing users and their performance evaluations.  
+It uses PostgreSQL as the database, JWT for authentication, and role-based authorization (user/admin) to protect and control access to evaluation endpoints.  
+Interactive API documentation is available via Swagger at `/docs`.
 
-## Project setup
+## How to run
+
+### Install dependencies
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
+### Run with Node locally
+
+1. Create a `.env` file (or copy `.env.sample`) and set:
+   - `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`
+   - `JWT_SECRET`
+
+2. Start the API:
 
 ```bash
 # development
-$ npm run start
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# or production build
+npm run build
+npm run start:prod
 ```
+
+The API will be available on `http://localhost:3000` and Swagger docs on `http://localhost:3000/docs`.
+
+### Run with Docker
+
+Build the image using the provided `dockerfile` and run the container:
+
+```bash
+docker build -t small-restapi:latest -f dockerfile .
+
+docker run --rm -p 3000:3000 \
+  --env-file .env \
+  small-restapi:latest
+```
+
+### Run with Docker Compose
+
+Use the provided `docker-compose.yml` to start both the API and PostgreSQL:
+
+```bash
+docker compose up -d
+```
+
+This will:
+
+- Start a PostgreSQL container with the credentials from `docker-compose.yml`
+- Start the NestJS API on `http://localhost:3000` with Swagger docs at `/docs`
 
 ## Run tests
 
 ```bash
 # unit tests
-$ npm run test
+npm run test
 
 # e2e tests
-$ npm run test:e2e
+npm run test:e2e
 
 # test coverage
-$ npm run test:cov
+npm run test:cov
 ```
 
 ## Deployment
